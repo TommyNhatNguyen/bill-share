@@ -1,6 +1,3 @@
-import 'package:bill_share/dto/auth.dto.dart';
-import 'package:bill_share/dto/user.dto.dart';
-import 'package:bill_share/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,13 +22,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void onRegister() async {
     if (_formKey.currentState!.validate()) {
-      final payload = CreateUserDTO(
-        user: UserModel(email: emailController.text),
-        auth: AuthSignUpDTO(
-          email: emailController.text,
-          password: passwordController.text,
-        ),
-      );
       if (mounted) {}
     }
   }

@@ -1,38 +1,44 @@
+import 'package:bill_share/data/services/firebase_auth_service.dart';
+import 'package:bill_share/domain/blocs/auth/login/auth_login_bloc.dart';
 import 'package:bill_share/views/bills_screen.dart';
 import 'package:bill_share/views/home_screen.dart';
 import 'package:bill_share/views/login_screen.dart';
 import 'package:bill_share/views/register_screen.dart';
 import 'package:bill_share/views/split-screen/split_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
-  initialLocation: '/home',
+  initialLocation: '/login',
   // Remove initialLocation completely
-  redirect: (context, state) async {
-    // final storageService = StorageService();
-    // final token = await storageService.storage.read(key: StorageKey.token);
-    final token = null;
-    // final isLoggedIn = token != null || authState.value != null;
-    final isLoggedIn = false;
-    final bool isTryingToAccessProtected =
-        state.matchedLocation != '/login' &&
-        state.matchedLocation != '/register';
-
-    if (!isLoggedIn && isTryingToAccessProtected) {
-      return '/login'; // Redirect to login if not logged in and accessing protected route
-    } else if (isLoggedIn &&
-        (state.matchedLocation == '/login' ||
-            state.matchedLocation == '/signup')) {
-      return '/home'; // Redirect to home if logged in and trying to access auth pages
-    }
-    return null; // No redirection needed
-  },
   routes: [
     GoRoute(
       path: '/login',
       builder: (context, state) {
-        return LoginScreen();
+        final authService = FirebaseAuthService();
+        return BlocProvider(
+          create: (BuildContext context) => AuthLoginBloc(),
+          child: StreamBuilder(
+            stream: authService.firebaseAuth.authStateChanges(),
+            builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+              if (snapshot.hasError) {
+                return const Text('Something went wrong');
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Text("Loading...");
+              }
+
+              if (!snapshot.hasData) {
+                return const LoginScreen();
+              }
+
+              return const HomeScreen();
+            },
+          ),
+        );
       },
     ),
     GoRoute(path: '/register', builder: (context, state) => RegisterScreen()),
