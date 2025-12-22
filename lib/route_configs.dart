@@ -1,5 +1,6 @@
 import 'package:bill_share/data/services/firebase_auth_service.dart';
 import 'package:bill_share/domain/blocs/auth/login/auth_login_bloc.dart';
+import 'package:bill_share/domain/blocs/auth/logout/auth_logout_bloc.dart';
 import 'package:bill_share/views/bills_screen.dart';
 import 'package:bill_share/views/home_screen.dart';
 import 'package:bill_share/views/login_screen.dart';
@@ -18,8 +19,11 @@ final router = GoRouter(
       path: '/login',
       builder: (context, state) {
         final authService = FirebaseAuthService();
-        return BlocProvider(
-          create: (BuildContext context) => AuthLoginBloc(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => AuthLoginBloc()),
+            BlocProvider(create: (context) => AuthLogoutBloc()),
+          ],
           child: StreamBuilder(
             stream: authService.firebaseAuth.authStateChanges(),
             builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {

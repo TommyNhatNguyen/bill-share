@@ -14,7 +14,6 @@ class AuthRepoFirebase extends AuthRepo {
         email: payload.email,
         password: payload.password,
       );
-      print(credential);
       return SuccessResult(data: credential);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -36,8 +35,19 @@ class AuthRepoFirebase extends AuthRepo {
       throw ErrorResult(message: e.toString(), code: "500");
     }
   }
+
+  @override
+  Future<SuccessResult<bool>> logout() async {
+    try {
+      await _service.firebaseAuth.signOut();
+      return SuccessResult(data: true);
+    } catch (e) {
+      throw ErrorResult(message: e.toString(), code: "500");
+    }
+  }
 }
 
 abstract class AuthRepo {
   Future<SuccessResult<UserCredential>> login(AuthLoginDto payload);
+  Future<SuccessResult<bool>> logout();
 }
