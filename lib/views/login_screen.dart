@@ -1,7 +1,7 @@
 import 'package:bill_share/constants/enums.dart';
-import 'package:bill_share/domain/blocs/auth/login/auth_login_bloc.dart';
-import 'package:bill_share/domain/blocs/auth/login/auth_login_event.dart';
-import 'package:bill_share/domain/blocs/auth/login/auth_login_state.dart';
+import 'package:bill_share/domain/blocs/auth/auth_bloc.dart';
+import 'package:bill_share/domain/blocs/auth/auth_event.dart';
+import 'package:bill_share/domain/blocs/auth/auth_state.dart';
 import 'package:bill_share/domain/models/auth_login_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  AuthLoginBloc get bloc => context.read<AuthLoginBloc>();
+  AuthBloc get bloc => context.read<AuthBloc>();
   bool isLoading = true;
   var errorMessage = '';
 
@@ -44,16 +44,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthLoginBloc, AuthLoginState>(
+    return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state.status == RequestStatus.error) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error ?? "Something went wrong")),
           );
-        } else if (state.status == RequestStatus.success) {
+        } else if (state.status == RequestStatus.success &&
+            state.authStatus == AuthStatus.authenticated) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text("Login successful!")));
+          context.replace('/home');
         }
       },
       child: Scaffold(

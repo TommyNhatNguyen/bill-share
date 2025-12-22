@@ -1,12 +1,10 @@
-import 'package:bill_share/data/services/firebase_auth_service.dart';
-import 'package:bill_share/domain/blocs/auth/login/auth_login_bloc.dart';
-import 'package:bill_share/domain/blocs/auth/logout/auth_logout_bloc.dart';
+import 'package:bill_share/constants/enums.dart';
+import 'package:bill_share/domain/blocs/auth/auth_bloc.dart';
 import 'package:bill_share/views/bills_screen.dart';
 import 'package:bill_share/views/home_screen.dart';
 import 'package:bill_share/views/login_screen.dart';
 import 'package:bill_share/views/register_screen.dart';
 import 'package:bill_share/views/split-screen/split_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -14,38 +12,26 @@ import 'package:go_router/go_router.dart';
 final router = GoRouter(
   initialLocation: '/login',
   // Remove initialLocation completely
+  redirect: (context, state) {
+    // Use read instead of watch here because this redirect can be evaluated
+    // from outside of the normal widget build phase; listening to changes
+    // (watch/select) from this context triggers Provider's assertion.
+    final isLogin =
+        context.read<AuthBloc>().state.authStatus == AuthStatus.authenticated;
+    if (isLogin &&
+        (state.uri.toString() == '/login' ||
+            state.uri.toString() == '/register')) {
+      return '/home';
+    }
+
+    return null;
+  },
   routes: [
+    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
     GoRoute(
-      path: '/login',
-      builder: (context, state) {
-        final authService = FirebaseAuthService();
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => AuthLoginBloc()),
-            BlocProvider(create: (context) => AuthLogoutBloc()),
-          ],
-          child: StreamBuilder(
-            stream: authService.firebaseAuth.authStateChanges(),
-            builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-              if (snapshot.hasError) {
-                return const Text('Something went wrong');
-              }
-
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Text("Loading...");
-              }
-
-              if (!snapshot.hasData) {
-                return const LoginScreen();
-              }
-
-              return const HomeScreen();
-            },
-          ),
-        );
-      },
+      path: '/register',
+      builder: (context, state) => const RegisterScreen(),
     ),
-    GoRoute(path: '/register', builder: (context, state) => RegisterScreen()),
     GoRoute(
       path: '/split-screen',
       pageBuilder: (context, state) {
