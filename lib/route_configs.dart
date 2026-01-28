@@ -11,11 +11,7 @@ import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
   initialLocation: '/login',
-  // Remove initialLocation completely
   redirect: (context, state) {
-    // Use read instead of watch here because this redirect can be evaluated
-    // from outside of the normal widget build phase; listening to changes
-    // (watch/select) from this context triggers Provider's assertion.
     final isLogin =
         context.read<AuthBloc>().state.authStatus == AuthStatus.authenticated;
     if (isLogin &&

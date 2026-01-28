@@ -5,12 +5,16 @@ import 'package:bill_share/data/repositories/auth_repo.dart';
 import 'package:bill_share/data/services/result.dart';
 import 'package:bill_share/domain/blocs/auth/auth_event.dart';
 import 'package:bill_share/domain/blocs/auth/auth_state.dart';
+import 'package:bill_share/domain/blocs/user/user_bloc.dart';
+import 'package:bill_share/domain/blocs/user/user_event.dart';
+import 'package:bill_share/domain/models/user_create_dto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   StreamSubscription<User?>? _authSubscription;
   final repo = AuthRepoFirebase();
+  final _userBloc = UserBloc();
   AuthBloc()
     : super(
         FirebaseAuth.instance.currentUser == null

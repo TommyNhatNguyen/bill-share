@@ -1,4 +1,5 @@
 import 'package:bill_share/domain/blocs/auth/auth_bloc.dart';
+import 'package:bill_share/domain/blocs/user/user_bloc.dart';
 import 'package:bill_share/route_configs.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(create: (BuildContext context) => AuthBloc()),
+        BlocProvider<UserBloc>(create: (BuildContext context) => UserBloc()),
+      ],
       child: MaterialApp.router(
         routerConfig: router,
         theme: ThemeData.from(

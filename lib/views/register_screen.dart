@@ -3,7 +3,10 @@ import 'package:bill_share/data/services/firebase_auth_service.dart';
 import 'package:bill_share/domain/blocs/auth/auth_bloc.dart';
 import 'package:bill_share/domain/blocs/auth/auth_event.dart';
 import 'package:bill_share/domain/blocs/auth/auth_state.dart';
+import 'package:bill_share/domain/blocs/user/user_bloc.dart';
+import 'package:bill_share/domain/blocs/user/user_event.dart';
 import 'package:bill_share/domain/models/auth_register_dto.dart';
+import 'package:bill_share/domain/models/user_create_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -21,6 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController passwordController = TextEditingController();
   final authService = FirebaseAuthService();
   AuthBloc get bloc => context.read<AuthBloc>();
+  UserBloc get userBloc => context.read<UserBloc>();
   @override
   void dispose() {
     super.dispose();
@@ -55,6 +59,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
             context,
           ).showSnackBar(SnackBar(content: Text("Register successful!")));
           context.replace('/home');
+          if (state.user != null) {
+            userBloc.add(
+              UserInfoCreate(
+                payload: UserCreateDto(
+                  username: state.user?.displayName ?? "",
+                  userId: state.user?.uid ?? "",
+                  phone: state.user?.phoneNumber,
+                  email: state.user?.email,
+                ),
+              ),
+            );
+          }
         }
       },
       child: Scaffold(
