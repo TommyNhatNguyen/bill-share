@@ -3,7 +3,8 @@ import 'package:bill_share/domain/blocs/auth/auth_bloc.dart';
 import 'package:bill_share/views/bills_screen.dart';
 import 'package:bill_share/views/home_screen.dart';
 import 'package:bill_share/views/login_screen.dart';
-import 'package:bill_share/views/register_screen.dart';
+import 'package:bill_share/views/register-screen/register_screen.dart';
+import 'package:bill_share/views/register-screen/register_screen_create.dart';
 import 'package:bill_share/views/split-screen/split_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +28,12 @@ final router = GoRouter(
     GoRoute(
       path: '/register',
       builder: (context, state) => const RegisterScreen(),
+      routes: [
+        GoRoute(
+          path: 'create',
+          builder: (context, state) => const RegisterScreenCreate(),
+        ),
+      ],
     ),
     GoRoute(
       path: '/split-screen',

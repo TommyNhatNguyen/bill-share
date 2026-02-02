@@ -1,11 +1,9 @@
 import 'package:bill_share/constants/enums.dart';
 import 'package:bill_share/data/services/firebase_auth_service.dart';
 import 'package:bill_share/domain/blocs/auth/auth_bloc.dart';
-import 'package:bill_share/domain/blocs/auth/auth_event.dart';
 import 'package:bill_share/domain/blocs/auth/auth_state.dart';
 import 'package:bill_share/domain/blocs/user/user_bloc.dart';
 import 'package:bill_share/domain/blocs/user/user_event.dart';
-import 'package:bill_share/domain/models/auth_register_dto.dart';
 import 'package:bill_share/domain/models/user_create_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,16 +30,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
     passwordController.dispose();
   }
 
-  void onRegister() async {
+  void onNextStep() async {
     if (_formKey.currentState!.validate()) {
-      bloc.add(
-        AuthRegisterPressed(
-          payload: AuthRegisterDto(
-            email: emailController.text,
-            password: passwordController.text,
-          ),
-        ),
-      );
+      context.push('/register/create');
+      // bloc.add(
+      //   AuthRegisterPressed(
+      //     payload: AuthRegisterDto(
+      //       email: emailController.text,
+      //       password: passwordController.text,
+      //     ),
+      //   ),
+      // );
     }
   }
 
@@ -149,8 +148,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton(
-                          onPressed: onRegister,
-                          child: Text("Create account"),
+                          onPressed: onNextStep,
+                          child: Text("Next"),
                         ),
                       ),
                       TextButton(

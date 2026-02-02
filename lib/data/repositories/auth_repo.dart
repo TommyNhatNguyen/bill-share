@@ -1,5 +1,5 @@
 import 'package:bill_share/data/services/firebase_auth_service.dart';
-import 'package:bill_share/data/services/result.dart';
+import 'package:bill_share/core/models/result.dart';
 import 'package:bill_share/domain/models/auth_login_dto.dart';
 import 'package:bill_share/domain/models/auth_register_dto.dart';
 import 'package:firebase_auth/firebase_auth.dart';

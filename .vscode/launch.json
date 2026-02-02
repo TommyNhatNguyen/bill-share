@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "name": "bill_share",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "bill_share (Real device)",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "00008110-000C09412287601E"
+        },
+        {
+            "name": "bill_share (iPhone 17 Pro)",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "209B3A35-1D84-4D77-B031-53EB1AAB795A"
+        },
+        {
+            "name": "bill_share (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "bill_share (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

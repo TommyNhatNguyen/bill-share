@@ -1,5 +1,5 @@
 import 'package:bill_share/constants/enums.dart';
-import 'package:bill_share/data/services/result.dart';
+import 'package:bill_share/core/models/result.dart';
 import 'package:bill_share/data/services/user_service.dart';
 import 'package:bill_share/domain/blocs/user/user_event.dart';
 import 'package:bill_share/domain/blocs/user/user_state.dart';
