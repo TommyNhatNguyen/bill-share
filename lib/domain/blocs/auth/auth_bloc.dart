@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:bill_share/constants/enums.dart';
-import 'package:bill_share/data/repositories/auth_repo.dart';
 import 'package:bill_share/core/models/result.dart';
+import 'package:bill_share/data/repositories/auth_repo.dart';
 import 'package:bill_share/domain/blocs/auth/auth_event.dart';
 import 'package:bill_share/domain/blocs/auth/auth_state.dart';
 import 'package:bill_share/domain/blocs/user/user_bloc.dart';
-import 'package:bill_share/domain/blocs/user/user_event.dart';
-import 'package:bill_share/domain/models/user_create_dto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
