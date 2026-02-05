@@ -23,7 +23,9 @@ class RegisterScreenCreate extends StatefulWidget {
 class _RegisterScreenCreateState extends State<RegisterScreenCreate> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final fullNameController = TextEditingController();
-  final phoneNumberZoneController = TextEditingController();
+  final phoneNumberZoneController = TextEditingController(
+    text: PhoneNumberZone.vn.value,
+  );
   AuthPhoneBloc get _authPhoneBloc => context.read<AuthPhoneBloc>();
   AuthBloc get _authBloc => context.read<AuthBloc>();
   UserBloc get _userBloc => context.read<UserBloc>();
@@ -100,7 +102,7 @@ class _RegisterScreenCreateState extends State<RegisterScreenCreate> {
                 TextFormField(
                   controller: fullNameController,
                   decoration: const InputDecoration(
-                    icon: Icon(Icons.person),
+                    border: OutlineInputBorder(),
                     label: Text("Full name *"),
                     hintText: "Enter full name",
                   ),

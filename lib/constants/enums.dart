@@ -30,4 +30,22 @@ enum PhoneNumberZone {
         return "US";
     }
   }
+
+  String get flagImage {
+    switch (this) {
+      case PhoneNumberZone.vn:
+        return 'assets/vn_flag.png';
+      case PhoneNumberZone.us:
+        return 'assets/us_flag.webp';
+    }
+  }
+
+  String get displayNumberZone {
+    switch (this) {
+      case PhoneNumberZone.vn:
+        return "+84";
+      case PhoneNumberZone.us:
+        return "+01";
+    }
+  }
 }

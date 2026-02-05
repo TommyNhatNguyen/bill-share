@@ -6,23 +6,70 @@ class PhonePicker extends StatelessWidget {
   final PhoneNumberZone? value;
   final Function({PhoneNumberZone? value}) onTap;
 
-  const PhonePicker({super.key, this.value, required this.onTap});
+  const PhonePicker({
+    super.key,
+    this.value = PhoneNumberZone.vn,
+    required this.onTap,
+  });
 
   void _dialogBuilder(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       enableDrag: true,
+      useSafeArea: true,
+      barrierColor: Theme.of(context).scaffoldBackgroundColor,
       builder: (BuildContext context) {
-        return SizedBox(
-          height: double.infinity,
-          width: double.infinity,
-          child: FilledButton(
-            onPressed: () {
-              onTap(value: PhoneNumberZone.us);
-              context.pop();
-            },
-            child: Text("htestset"),
+        return Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () => context.pop(),
+                        child: Text("Cancel"),
+                      ),
+                    ),
+                    Text(
+                      "Choose a country",
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: PhoneNumberZone.values.length,
+                    itemBuilder: (context, index) {
+                      final item = PhoneNumberZone.values[index];
+                      return ListTile(
+                        leading: Image.asset(item.flagImage, scale: 50),
+                        title: Text(item.displayText),
+                        trailing: Text(item.displayNumberZone),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        onTap: () {
+                          onTap(value: item);
+                          context.pop();
+                        },
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -31,9 +78,27 @@ class PhonePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
+    return OutlinedButton.icon(
       onPressed: () => _dialogBuilder(context),
-      child: value != null ? Text(value!.value) : Text("Hello"),
+      style: OutlinedButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        padding: EdgeInsets.all(10),
+      ),
+      icon: value?.flagImage != null
+          ? Image.asset(value!.flagImage, scale: 50)
+          : null,
+      label: Row(
+        children: [
+          Text(
+            value?.displayNumberZone ?? "",
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+          const SizedBox(width: 4),
+          const Icon(Icons.arrow_drop_down),
+        ],
+      ),
     );
   }
 }
