@@ -78,26 +78,29 @@ class PhonePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      onPressed: () => _dialogBuilder(context),
-      style: OutlinedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        padding: EdgeInsets.all(10),
-      ),
-      icon: value?.flagImage != null
-          ? Image.asset(value!.flagImage, scale: 50)
-          : null,
-      label: Row(
-        children: [
-          Text(
-            value?.displayNumberZone ?? "",
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Theme.of(context).colorScheme.secondary,
+    return SizedBox(
+      height: 56,
+      child: OutlinedButton.icon(
+        onPressed: () => _dialogBuilder(context),
+        style: OutlinedButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+          padding: EdgeInsets.all(10),
+        ),
+        icon: value?.flagImage != null
+            ? Image.asset(value!.flagImage, scale: 50)
+            : null,
+        label: Row(
+          children: [
+            Text(
+              value?.displayNumberZone ?? "",
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
-          ),
-          const SizedBox(width: 4),
-          const Icon(Icons.arrow_drop_down),
-        ],
+            const SizedBox(width: 4),
+            const Icon(Icons.arrow_drop_down),
+          ],
+        ),
       ),
     );
   }

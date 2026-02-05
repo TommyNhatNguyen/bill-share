@@ -23,6 +23,7 @@ class RegisterScreenCreate extends StatefulWidget {
 class _RegisterScreenCreateState extends State<RegisterScreenCreate> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final fullNameController = TextEditingController();
+  final phoneController = TextEditingController();
   final phoneNumberZoneController = TextEditingController(
     text: PhoneNumberZone.vn.value,
   );
@@ -113,7 +114,7 @@ class _RegisterScreenCreateState extends State<RegisterScreenCreate> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     PhonePicker(
@@ -126,6 +127,24 @@ class _RegisterScreenCreateState extends State<RegisterScreenCreate> {
                           phoneNumberZoneController.text = value!.value;
                         });
                       },
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextFormField(
+                        controller: phoneController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          label: Text("Phone number *"),
+                          hintText: "Enter phone number",
+                        ),
+                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Full name shouldn't be empty";
+                          }
+                          return null;
+                        },
+                      ),
                     ),
                   ],
                 ),
