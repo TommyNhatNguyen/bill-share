@@ -1,4 +1,5 @@
 import 'package:bill_share/constants/enums.dart';
+import 'package:bill_share/core/ui/phone_picker.dart';
 import 'package:bill_share/domain/blocs/auth/auth_bloc.dart';
 import 'package:bill_share/domain/blocs/auth/auth_event.dart';
 import 'package:bill_share/domain/blocs/auth/auth_phone_bloc.dart';
@@ -22,6 +23,7 @@ class RegisterScreenCreate extends StatefulWidget {
 class _RegisterScreenCreateState extends State<RegisterScreenCreate> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final fullNameController = TextEditingController();
+  final phoneNumberZoneController = TextEditingController();
   AuthPhoneBloc get _authPhoneBloc => context.read<AuthPhoneBloc>();
   AuthBloc get _authBloc => context.read<AuthBloc>();
   UserBloc get _userBloc => context.read<UserBloc>();
@@ -36,6 +38,12 @@ class _RegisterScreenCreateState extends State<RegisterScreenCreate> {
         ),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    fullNameController.dispose();
   }
 
   @override
@@ -104,6 +112,21 @@ class _RegisterScreenCreateState extends State<RegisterScreenCreate> {
                   },
                 ),
                 const SizedBox(height: 16),
+                Row(
+                  children: [
+                    PhonePicker(
+                      value: PhoneNumberZone.fromString(
+                        phoneNumberZoneController.text,
+                      ),
+                      onTap: ({value}) {
+                        if (value?.value == null) return;
+                        setState(() {
+                          phoneNumberZoneController.text = value!.value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
