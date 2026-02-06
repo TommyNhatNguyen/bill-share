@@ -1,23 +1,24 @@
+import 'package:bill_share/constants/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserModel {
   String? username;
   String? phone;
+  PhoneCode? phoneCode;
   String? email;
   User? user;
 
-  UserModel({this.username, this.phone, this.email, this.user});
-  UserModel.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
-    username = json['username'];
-    phone = json['phone'];
-    user = json['user'];
-  }
+  UserModel({this.username, this.phone, this.email, this.user, this.phoneCode});
 
-  Map<String, dynamic> toJson() => {
-    'username': username,
-    'phone': phone,
-    'email': email,
-    'user': user,
-  };
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      username: json['username'],
+      phone: json['phone'],
+      phoneCode: json['phoneCode'] != null
+          ? PhoneCode.fromString(json['phoneCode'])
+          : null,
+      email: json['email'],
+      user: json['user'],
+    );
+  }
 }

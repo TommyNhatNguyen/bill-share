@@ -24,9 +24,7 @@ class _RegisterScreenCreateState extends State<RegisterScreenCreate> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final fullNameController = TextEditingController();
   final phoneController = TextEditingController();
-  final phoneNumberZoneController = TextEditingController(
-    text: PhoneNumberZone.vn.value,
-  );
+  final phoneCodeController = TextEditingController(text: PhoneCode.vn.value);
   AuthPhoneBloc get _authPhoneBloc => context.read<AuthPhoneBloc>();
   AuthBloc get _authBloc => context.read<AuthBloc>();
   UserBloc get _userBloc => context.read<UserBloc>();
@@ -66,7 +64,8 @@ class _RegisterScreenCreateState extends State<RegisterScreenCreate> {
                   payload: UserCreateDto(
                     username: fullNameController.text,
                     userId: state.user!.uid,
-                    phone: _authPhoneBloc.state.phone ?? "",
+                    phone: phoneController.text,
+                    phoneCode: phoneCodeController.text,
                     email:
                         state.user?.email ?? _authPhoneBloc.state.email ?? "",
                   ),
@@ -93,7 +92,15 @@ class _RegisterScreenCreateState extends State<RegisterScreenCreate> {
       ],
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: AppBar(centerTitle: false),
+        appBar: AppBar(
+          centerTitle: false,
+          title: Text(
+            "Create Account",
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
           child: Form(
@@ -114,21 +121,20 @@ class _RegisterScreenCreateState extends State<RegisterScreenCreate> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 16),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     PhonePicker(
-                      value: PhoneNumberZone.fromString(
-                        phoneNumberZoneController.text,
-                      ),
+                      value: PhoneCode.fromString(phoneCodeController.text),
                       onTap: ({value}) {
                         if (value?.value == null) return;
                         setState(() {
-                          phoneNumberZoneController.text = value!.value;
+                          phoneCodeController.text = value!.value;
                         });
                       },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: TextFormField(
                         controller: phoneController,

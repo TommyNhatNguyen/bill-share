@@ -115,7 +115,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       width: double.infinity,
                       child: FilledButton(
                         onPressed: onNextStep,
-                        child: Text("Next"),
+                        child: Text("Register"),
                       ),
                     ),
                     TextButton(

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class PhonePicker extends StatelessWidget {
-  final PhoneNumberZone? value;
-  final Function({PhoneNumberZone? value}) onTap;
+  final PhoneCode? value;
+  final Function({PhoneCode? value}) onTap;
 
   const PhonePicker({
     super.key,
-    this.value = PhoneNumberZone.vn,
+    this.value = PhoneCode.vn,
     required this.onTap,
   });
 
@@ -48,9 +48,9 @@ class PhonePicker extends StatelessWidget {
                 const SizedBox(height: 16),
                 Expanded(
                   child: ListView.separated(
-                    itemCount: PhoneNumberZone.values.length,
+                    itemCount: PhoneCode.values.length,
                     itemBuilder: (context, index) {
-                      final item = PhoneNumberZone.values[index];
+                      final item = PhoneCode.values[index];
                       return ListTile(
                         leading: Image.asset(item.flagImage, scale: 50),
                         title: Text(item.displayText),
